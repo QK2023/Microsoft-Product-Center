@@ -1,5 +1,5 @@
 const products = [
-    { year: 1975, name: "Altair BASIC", deprecated: false },
+    { year: 1975, name: "Altair BASIC", deprecated: true },
     { year: 1983, name: "Microsoft Word", deprecated: false },
     { year: 1985, name: "Windows 1.0", deprecated: true },
     { year: 1990, name: "Windows 3.0", deprecated: true },
@@ -20,12 +20,16 @@ const products = [
 ];
 
 function generateProductList() {
-    const productList = document.getElementById("product-list");
-    products.forEach(product => {
-        const listItem = document.createElement("li");
-        listItem.textContent = `${product.year}: ${product.name} ${product.deprecated ? "(Deprecated)" : ""}`;
-        productList.appendChild(listItem);
-    });
+    const productList = document.getElementById("productList");
+    productList.innerHTML = "";
+    products
+        .sort((a, b) => a.year - b.year)
+        .forEach(product => {
+            const listItem = document.createElement("li");
+            listItem.innerHTML = `<span>${product.year}: ${product.name}</span> <span style="color:${product.deprecated ? '#aaa' : '#28a745'}">${product.deprecated ? "（Deprecated）" : "（Not Deprecated）"}</span>`;
+            if (product.deprecated) listItem.style.textDecoration = "line-through";
+            productList.appendChild(listItem);
+        });
 }
 
 document.addEventListener("DOMContentLoaded", generateProductList);
